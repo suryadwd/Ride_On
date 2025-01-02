@@ -1,19 +1,45 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setCaption } from "../redux/captionSlice";
+import axios from "axios";
+import {toast} from "react-hot-toast";
 
 const Clogin = () => {
 
-    const [caption, setCaption] = useState({
+    const [caption, setCaptions] = useState({
       email: "",
       password: "",
     });
   
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
   
-    const submitHandler = (e) => {
+  
+    const submitHandler = async (e) => {
       e.preventDefault()
-      console.log(caption.email,caption.password)
-      setCaption({
+      
+      try {
+        
+        const res = await axios.post("http://localhost:8000/api/v1/captain/login", caption,{
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials:true,
+        })
+
+        if(res.data.success){
+          dispatch(setCaption(res.data));
+          navigate("/c-home");
+          toast.success(res.data.message);
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+
+
+      setCaptions({
         email: "",
         password: "",
       })
@@ -35,7 +61,7 @@ const Clogin = () => {
             type="email"
             placeholder="email@example.com"
             value={caption.email}  
-            onChange={e => setCaption({...caption,email:e.target.value})}
+            onChange={e => setCaptions({...caption,email:e.target.value})}
             className="bg-[#eeeeee] mb-7 rounded py-2 px-4 border w-full"
           />
           <h3 className="text-xl mb-3 font-medium ">Enter Password</h3>
@@ -43,7 +69,7 @@ const Clogin = () => {
             type="password"
             placeholder="password"
             value={caption.password}
-            onChange={e => setCaption({...caption,password:e.target.value})}
+            onChange={e => setCaptions({...caption,password:e.target.value})}
             className="bg-[#eeeeee] mb-7 rounded py-2 px-4 border w-full"
           />
           <button type="submit" className="bg-black text-white font-semibold mb-7 rounded py-2 px-4  w-full">

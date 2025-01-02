@@ -4,7 +4,7 @@ import { protectedRouteForCap } from "../middleware/protectedRouteforCap.js"
 const route = express.Router()
 
 
-route.post("/register",register)
+route.post("/signup",register)
 route.post("/login",login)
 route.post("/logout",logout)
 route.post("/profile",protectedRouteForCap,getCaptionProfile)

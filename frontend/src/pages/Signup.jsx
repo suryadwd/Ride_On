@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setAuthUser } from "../redux/userSlice";
+
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -8,17 +13,46 @@ const Signup = () => {
     firstname: "",
     lastname: "",
   });
+  
+  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const submitHandler = (e) => {
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(user);
+    
     setUser({
       email: "",
       password: "",
       firstname: "",
       lastname: "",
     });
+
+    try {
+      
+      const res = await axios.post("http://localhost:8000/api/v1/users/signup", user,{
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials:true,
+      });
+
+      if(res.data.success){
+        toast.success(res.data.message);
+        dispatch(setAuthUser(res.data))
+        navigate("/home")
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+
+
+
   };
+
+
 
   return (
     <div className="p-7 flex flex-col justify-between h-screen">
@@ -70,7 +104,7 @@ const Signup = () => {
             type="submit"
             className="bg-black text-white font-semibold mb-5 rounded py-2 px-4  w-full"
           >
-            Signup
+            Create Account
           </button>
 
           <Link to="/Login" className="flex ml-6 mt-4 mb-5 cursor-pointer">
