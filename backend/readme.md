@@ -336,6 +336,83 @@ curl -X POST http://localhost:5000/api/v1/users/logout \
 }
 ```
 
+## Get User Profile Endpoint
+
+### POST /api/v1/users/profile
+
+This endpoint allows an authenticated user to get their profile information.
+
+#### Request
+
+- **URL:** `/api/v1/users/profile`
+- **Method:** `POST`
+- **Headers:** `Content-Type: application/json`
+- **Cookies:** `jwt=your_jwt_token`
+
+#### Response
+
+- **Success Response:**
+  - **Code:** `200 OK`
+  - **Content:**
+    ```json
+    {
+      "success": true,
+      "user": {
+        "_id": "user_id",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com",
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      }
+    }
+    ```
+
+- **Error Responses:**
+  - **Code:** `404 Not Found`
+    - **Content:**
+      ```json
+      {
+        "message": "User not found"
+      }
+      ```
+
+  - **Code:** `500 Internal Server Error`
+    - **Content:**
+      ```json
+      {
+        "message": "error message"
+      }
+      ```
+
+#### Description
+
+This endpoint retrieves the profile information of an authenticated user.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/v1/users/profile \
+-H "Content-Type: application/json" \
+--cookie "jwt=your_jwt_token"
+```
+
+#### Example Response
+
+```json
+{
+  "success": true,
+  "user": {
+    "_id": "user_id",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
 ## Caption Login Endpoint
 
 ### POST /api/v1/caption/login
@@ -444,6 +521,227 @@ curl -X POST http://localhost:5000/api/v1/caption/login \
   "success": true,
   "message": "Caption registered successfully",
   "newCap": {
+    "_id": "caption_id",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+## Caption Logout Endpoint
+
+### POST /api/v1/caption/logout
+
+This endpoint allows an authenticated caption to log out.
+
+#### Request
+
+- **URL:** `/api/v1/caption/logout`
+- **Method:** `POST`
+- **Headers:** `Content-Type: application/json`
+- **Cookies:** `jwt=your_jwt_token`
+
+#### Response
+
+- **Success Response:**
+  - **Code:** `200 OK`
+  - **Content:**
+    ```json
+    {
+      "success": true,
+      "message": "Caption logged out successfully"
+    }
+    ```
+
+- **Error Responses:**
+  - **Code:** `401 Unauthorized`
+    - **Content:**
+      ```json
+      {
+        "message": "Unauthorized"
+      }
+      ```
+
+  - **Code:** `500 Internal Server Error`
+    - **Content:**
+      ```json
+      {
+        "message": "error message"
+      }
+      ```
+
+#### Description
+
+This endpoint logs out an authenticated caption by clearing the JWT token from the cookies.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/v1/caption/logout \
+-H "Content-Type: application/json" \
+--cookie "jwt=your_jwt_token"
+```
+
+#### Example Response
+
+```json
+{
+  "success": true,
+  "message": "Caption logged out successfully"
+}
+```
+
+## Get Caption Profile Endpoint
+
+### POST /api/v1/caption/profile
+
+This endpoint allows an authenticated caption to get their profile information.
+
+#### Request
+
+- **URL:** `/api/v1/caption/profile`
+- **Method:** `POST`
+- **Headers:** `Content-Type: application/json`
+- **Cookies:** `jwt=your_jwt_token`
+
+#### Response
+
+- **Success Response:**
+  - **Code:** `200 OK`
+  - **Content:**
+    ```json
+    {
+      "success": true,
+      "caption": {
+        "_id": "caption_id",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com",
+        "vehicle": {
+          "color": "red",
+          "plate": "ABC123",
+          "capacity": 4,
+          "vehicleType": "car"
+        },
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      }
+    }
+    ```
+
+- **Error Responses:**
+  - **Code:** `404 Not Found`
+    - **Content:**
+      ```json
+      {
+        "message": "Caption not found"
+      }
+      ```
+
+  - **Code:** `500 Internal Server Error`
+    - **Content:**
+      ```json
+      {
+        "message": "error message"
+      }
+      ```
+
+#### Description
+
+This endpoint retrieves the profile information of an authenticated caption.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/v1/caption/profile \
+-H "Content-Type: application/json" \
+--cookie "jwt=your_jwt_token"
+```
+
+#### Example Response
+
+```json
+{
+  "success": true,
+  "caption": {
+    "_id": "caption_id",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
+
+## Protected Route Middleware for Caption
+
+### Middleware: protectedRouteForCap
+
+This middleware protects routes by ensuring that the caption is authenticated.
+
+#### Description
+
+The `protectedRouteForCap` middleware checks for a valid JWT token in the cookies. If the token is valid, it attaches the caption information to the request object and allows the request to proceed. If the token is missing or invalid, it returns an unauthorized error.
+
+#### Usage
+
+To use the `protectedRouteForCap` middleware, simply add it to any route that you want to protect.
+
+```javascript
+import { protectedRouteForCap } from "../middleware/protectedRouteforCap.js";
+
+router.post("/profile", protectedRouteForCap, getCaptionProfile);
+router.post("/logout", protectedRouteForCap, logout);
+```
+
+#### Error Responses
+
+- **Code:** `401 Unauthorized`
+  - **Content:**
+    ```json
+    {
+      "message": "Unauthorized"
+    }
+    ```
+
+- **Code:** `500 Internal Server Error`
+  - **Content:**
+    ```json
+    {
+      "message": "error message"
+    }
+    ```
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/v1/caption/profile \
+-H "Content-Type: application/json" \
+--cookie "jwt=your_jwt_token"
+```
+
+#### Example Response
+
+```json
+{
+  "success": true,
+  "caption": {
     "_id": "caption_id",
     "firstname": "John",
     "lastname": "Doe",

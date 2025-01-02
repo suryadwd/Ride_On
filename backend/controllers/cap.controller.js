@@ -52,3 +52,67 @@ export const register = async (req, res) => {
     return res.status(500).json({message:error.message})
   }
 }
+
+export const login = async (req, res) => {
+
+  try {
+    
+    const {email,password} = req.body
+
+    const caption = await Captain.findOne({email})
+
+    if(!caption)  return res.status(400).json({message:"Caption not found"})
+    
+    const isMatch = bcrypt.compare(password,caption.password)
+
+    if(!isMatch) return res.status(400).json({message:"Invalid password"})
+
+    const payload = ({
+      id:caption._id,
+      email:caption.email,
+      firstname:caption.firstname,
+      lastname:caption.lastname,
+    })
+
+    generateTokenAndSetCookies(payload,res)
+
+    return res.status(200).json({success:true,message:"Caption logged in successfully",caption})
+
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+
+}
+
+export const logout = async (req, res) => {
+
+  try {
+    
+    res.cookie("jwt","",{maxAge:0})
+    return res.status(200).json({message:"Caption logged out successfully"})
+
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+
+}
+
+export const getCaptionProfile = async (req, res) => {
+
+  try {
+    
+   const captionId = req.cap._id
+
+    if(!captionId) return res.status(400).json({message:"Invalid user"})
+
+   const caption = await Captain.findById(captionId).select("-password") 
+    
+   if(!caption) return res.status(400).json({message:"Invalid user"})
+
+    return res.status(200).json({success:true,caption})
+
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
+
+}
