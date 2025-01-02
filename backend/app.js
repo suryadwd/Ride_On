@@ -4,6 +4,7 @@ dotenv.config()
 import cors from "cors"
 const app = express()
 import userRoutes from "./routes/user.route.js"
+import captionRoutes from "./routes/cap.route.js"
 import cookieParser from "cookie-parser"
 app.use(cookieParser())
 app.use(cors())
@@ -11,5 +12,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 app.use("/api/v1/users/",userRoutes)
+app.use("/api/v1/caption/",captionRoutes)
 
 export default app

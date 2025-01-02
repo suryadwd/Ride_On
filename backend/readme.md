@@ -335,3 +335,127 @@ curl -X POST http://localhost:5000/api/v1/users/logout \
   "message": "User logged out successfully"
 }
 ```
+
+## Caption Login Endpoint
+
+### POST /api/v1/caption/login
+
+This endpoint allows a new caption to register by providing their details.
+
+#### Request
+
+- **URL:** `/api/v1/caption/login`
+- **Method:** `POST`
+- **Headers:** `Content-Type: application/json`
+- **Body:**
+  ```json
+  {
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "password": "yourpassword",
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+  ```
+
+#### Response
+
+- **Success Response:**
+  - **Code:** `201 Created`
+  - **Content:**
+    ```json
+    {
+      "success": true,
+      "message": "Caption registered successfully",
+      "newCap": {
+        "_id": "caption_id",
+        "firstname": "John",
+        "lastname": "Doe",
+        "email": "john.doe@example.com",
+        "vehicle": {
+          "color": "red",
+          "plate": "ABC123",
+          "capacity": 4,
+          "vehicleType": "car"
+        },
+        "createdAt": "timestamp",
+        "updatedAt": "timestamp"
+      }
+    }
+    ```
+
+- **Error Responses:**
+  - **Code:** `400 Bad Request`
+    - **Content:**
+      ```json
+      {
+        "message": "All fields are required"
+      }
+      ```
+    - **Content:**
+      ```json
+      {
+        "message": "Password required and greater than 6 characters"
+      }
+      ```
+    - **Content:**
+      ```json
+      {
+        "message": "Caption already exists"
+      }
+      ```
+
+  - **Code:** `500 Internal Server Error`
+    - **Content:**
+      ```json
+      {
+        "message": "error message"
+      }
+      ```
+
+#### Description
+
+This endpoint registers a new caption by taking their `firstname`, `lastname`, `email`, `password`, `color`, `plate`, `capacity`, and `vehicleType`. The password must be at least 6 characters long. If the registration is successful, a token is generated and set in the cookies.
+
+#### Example Request
+
+```bash
+curl -X POST http://localhost:5000/api/v1/caption/login \
+-H "Content-Type: application/json" \
+-d '{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@example.com",
+  "password": "yourpassword",
+  "color": "red",
+  "plate": "ABC123",
+  "capacity": 4,
+  "vehicleType": "car"
+}'
+```
+
+#### Example Response
+
+```json
+{
+  "success": true,
+  "message": "Caption registered successfully",
+  "newCap": {
+    "_id": "caption_id",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "vehicle": {
+      "color": "red",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "createdAt": "timestamp",
+    "updatedAt": "timestamp"
+  }
+}
+```
