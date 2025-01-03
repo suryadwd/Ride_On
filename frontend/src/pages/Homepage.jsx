@@ -2,14 +2,16 @@ import React, { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
-
+import LocSerPanel from "../components/LocSerPanel";
+import VehiclePanel from "../components/VehiclePanel";
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelUp, setPanelUp] = useState(false);
+  const [vehicle, setVehicle] = useState(false);
 
   const pannel = useRef(null);
-
+  const vehiclePanel = useRef(null);
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -20,8 +22,14 @@ const Homepage = () => {
     });
   }, [panelUp]);
 
+  useGSAP(() => {
+    gsap.to(vehiclePanel.current, {
+      transform: vehicle ? "translateY(0%)" : "translateY(100%)",
+    });
+  }, [vehicle]);
+
   return (
-    <div className="h-screen relative">
+    <div className="h-screen relative overflow-hidden">
       <img
         className="w-28 absolute left-7 top-7"
         src="https://imgs.search.brave.com/FZq7YFqzVbkjhipVXmxfaZY-RmPwy3wsG0WV1UdM8bs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy13b3JsZC5uZXQv/d3AtY29udGVudC91/cGxvYWRzLzIwMjAv/MDUvVWJlci1Mb2dv/LTcwMHgzOTQucG5n"
@@ -77,7 +85,23 @@ const Homepage = () => {
           </form>
         </div>
 
-        <div ref={pannel} className=" h-[0%] p-5 bg-red-500"></div>
+        <div ref={pannel} className=" p-5 bg-white">
+          <LocSerPanel setPanelUp={setPanelUp}  vehicle={vehicle} setVehicle={setVehicle} />
+        </div>
+      </div>
+
+      <div
+        ref={vehiclePanel}
+        className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white"
+      >
+
+
+        <VehiclePanel setVehicle={setVehicle} />
+
+
+
+
+
       </div>
     </div>
   );
