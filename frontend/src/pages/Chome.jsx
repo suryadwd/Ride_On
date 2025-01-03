@@ -3,7 +3,7 @@ import React from 'react'
 const Chome = () => {
   return (
     <div>
-      Chome
+      Chomepage
     </div>
   )
 }

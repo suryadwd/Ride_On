@@ -24,6 +24,22 @@ const routes = createBrowserRouter([
     path:"/signup",
     element:<Protection><Signup/></Protection>
   },
+  
+  {
+    path:"/home",
+    element:  <Protection><Homepage/></Protection>
+  },
+
+  {
+    path:"/logout",
+    element:  <Protection><Logout/></Protection>
+  },
+
+
+  {
+    path:"/c-home",
+    element:  <ProtectionCap><Chome/></ProtectionCap>
+  },
   {
     path:"/C-signup",
     element:<Protection><Csignup/></Protection>
@@ -32,21 +48,8 @@ const routes = createBrowserRouter([
     path:"/C-login",
     element:<Protection><Clogin/></Protection>
   },
-  {
-    path:"/home",
-    element:  <Protection><Homepage/></Protection>
-  },
 
-  {
-    path:"/c-home",
-    element:  <ProtectionCap><Chome/></ProtectionCap>
-  },
-
-  {
-    path:"/logout",
-    element:  <Protection><Logout/></Protection>
-  },
-
+ 
 ])
 
 
