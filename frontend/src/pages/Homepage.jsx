@@ -4,14 +4,18 @@ import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocSerPanel from "../components/LocSerPanel";
 import VehiclePanel from "../components/VehiclePanel";
+import ConfVeh from "../components/ConfVeh";
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelUp, setPanelUp] = useState(false);
   const [vehicle, setVehicle] = useState(false);
+  const [confVeh, setConfVeh] = useState(false);
 
   const pannel = useRef(null);
   const vehiclePanel = useRef(null);
+  const confVehPanel = useRef(null);
+
   const submitHandler = (e) => {
     e.preventDefault();
   };
@@ -27,6 +31,12 @@ const Homepage = () => {
       transform: vehicle ? "translateY(0%)" : "translateY(100%)",
     });
   }, [vehicle]);
+
+  useGSAP(() => {
+    gsap.to(confVehPanel.current, {
+      transform: confVeh ? "translateY(0%)" : "translateY(100%)",
+    });
+  }, [confVeh]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -86,7 +96,11 @@ const Homepage = () => {
         </div>
 
         <div ref={pannel} className=" p-5 bg-white">
-          <LocSerPanel setPanelUp={setPanelUp}  vehicle={vehicle} setVehicle={setVehicle} />
+          <LocSerPanel
+            setPanelUp={setPanelUp}
+            vehicle={vehicle}
+            setVehicle={setVehicle}
+          />
         </div>
       </div>
 
@@ -94,14 +108,14 @@ const Homepage = () => {
         ref={vehiclePanel}
         className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white"
       >
+        <VehiclePanel setConfVeh={setConfVeh} setVehicle={setVehicle} />
+      </div>
 
-
-        <VehiclePanel setVehicle={setVehicle} />
-
-
-
-
-
+      <div
+        ref={confVehPanel}
+        className="fixed w-full z-10  bottom-0 p-7   translate-y-full  bg-white"
+      >
+        <ConfVeh/>
       </div>
     </div>
   );

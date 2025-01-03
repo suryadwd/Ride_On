@@ -1,6 +1,6 @@
 import React from 'react'
 
-const VehiclePanel = ({setVehicle}) => {
+const VehiclePanel = ({setVehicle, setConfVeh}) => {
   return (
     <div>
       
@@ -11,7 +11,7 @@ const VehiclePanel = ({setVehicle}) => {
 
         <h3 className="text-2xl font-semibold mb-3">Choose a Vehicle</h3>
 
-        <div className="flex w-full active:border-black border-2 rounded-lg p-3 mb-2  items-center justify-between">
+        <div onClick={() => setConfVeh(true)} className="flex w-full active:border-black border-2 rounded-lg p-3 mb-2  items-center justify-between">
           <img
             className="h-14  ml-[-10%] mb-1"
             src="https://www.pngplay.com/wp-content/uploads/8/Uber-PNG-Photos.png"
@@ -32,7 +32,7 @@ const VehiclePanel = ({setVehicle}) => {
           <h2 className="text-xl font-medium">₹96.76</h2>
         </div>
 
-        <div className="flex w-full active:border-black border-2 rounded-lg p-3 mb-2 items-center justify-between">
+        <div   onClick={() => setConfVeh(true)}className="flex w-full active:border-black border-2 rounded-lg p-3 mb-2 items-center justify-between">
           <img
             className="h-14  ml-[-8%] mb-1"
             src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648177797/assets/fc/ddecaa-2eee-48fe-87f0-614aa7cee7d3/original/Uber_Moto_312x208_pixels_Mobile.png"
@@ -53,7 +53,7 @@ const VehiclePanel = ({setVehicle}) => {
           <h2 className="text-xl font-medium">₹46.82</h2>
         </div>
 
-        <div className="flex w-full active:border-black border-2 rounded-lg p-3 mb-[-7%]  items-center justify-between">
+        <div  onClick={() => setConfVeh(true)} className="flex w-full active:border-black border-2 rounded-lg p-3 mb-[-7%]  items-center justify-between">
           <img
             className="h-14  ml-[-8%] mb-1"
             src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png"
