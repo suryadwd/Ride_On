@@ -1,33 +1,23 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import CaptainDetails from "../components/CaptainDetails";
-import RidePopUp from "../components/RidePopUp";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import ConfRidePopUp from "../components/ConfRidePopUp";
-const Chome = () => {
+import FinishedRide from "../components/FinishedRide";
 
 
-  const [popUp, setPopUp] = useState(!false);
-  const [confPopUp, setConfPopUp] = useState(false);
+const CaptainRiding = () => {
 
+    const[finish, setFinish] = useState(false);
 
-  const popUpPannel = useRef(null);
-  const confPopUpPannel = useRef(null)
+    const finishPanel = useRef(null);
 
   useGSAP(() => {
-    gsap.to(confPopUpPannel.current, {
-      transform: confPopUp ? "translateY(0%)" : "translateY(100%)",
-      height: confPopUp ? "100%" : "0%"
+    gsap.to(finishPanel.current, {
+      transform: finish ? "translateY(0%)" : "translateY(100%)",
+      height: finish ? "80%" : "0%"
     });
-  }, [confPopUp]);
+  }, [finish]);
 
-
-  useGSAP(() => {
-    gsap.to(popUpPannel.current, {
-      transform: popUp ? "translateY(0%)" : "translateY(100%)"
-    });
-  }, [popUp]);
 
   return (
     <div className="h-screen">
@@ -45,7 +35,7 @@ const Chome = () => {
         </Link>
       </div>
 
-      <div className="h-3/5">
+      <div className="h-4/5">
         <img
           className="h-full w-full object-cover"
           src="https://imgs.search.brave.com/jK1glZ46aRnMBCp3Bqv7YWCuqyKXawBDiB0s1mPwES0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zaW1v/bnBhbi5jb20vd3At/Y29udGVudC90aGVt/ZXMvc3BfcG9ydGZv/bGlvL2Fzc2V0cy91/YmVyLW5vdC1waWNr/dXAuanBn"
@@ -53,18 +43,22 @@ const Chome = () => {
         />
       </div>
 
-      <div className="h-2/5 p-6">
-        <CaptainDetails />
-      </div>
-
+      <div 
       
-      <div ref={popUpPannel} className="fixed w-full z-10 translate-y-full  bottom-0 p-7     bg-white">
-        <RidePopUp setPopUp={setPopUp} setConfPopUp={setConfPopUp} />
+      onClick={() => setFinish(true)}
+
+      className="h-1/5 p-6 items-center flex justify-between relative bg-yellow-500 ">
+        <i className=" absolute top-0 right-36 mr-8  ri-arrow-up-wide-line text-3xl"></i>
+        <h4 className="text-xl font-semibold">3 KM away</h4>
+        <button className="bg-green-600 mt-2 text-white font-semibold p-3 px-10 rounded-lg">
+          Complete Ride
+        </button>
       </div>
 
 
-      <div ref={confPopUpPannel} className="fixed w-full z-10 translate-y-full  bottom-0 p-7     bg-white">
-        <ConfRidePopUp setConfPopUp={setConfPopUp} setPopUp={setPopUp}  />
+
+      <div ref={finishPanel} className="fixed w-full z-10 translate-y-full  bottom-0 p-7     bg-white">
+        <FinishedRide setFinish={setFinish} />
       </div>
 
 
@@ -73,4 +67,5 @@ const Chome = () => {
   );
 };
 
-export default Chome;
+export default CaptainRiding;
+

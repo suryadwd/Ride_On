@@ -11,6 +11,7 @@ import Protection from './pages/Protection'
 import ProtectionCap from './pages/ProtectionCap'
 import Logout from './pages/Logout'
 import Riding from './pages/Riding'
+import CaptainRiding from './pages/CaptainRiding'
 
 
 const routes = createBrowserRouter([
@@ -56,6 +57,10 @@ const routes = createBrowserRouter([
     element:<Clogin/>
   },
 
+  {
+    path:"/C-riding",
+    element:<CaptainRiding/>
+  },
  
 ])
 
