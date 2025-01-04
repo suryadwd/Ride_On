@@ -45,15 +45,15 @@ const routes = createBrowserRouter([
 
   {
     path:"/c-home",
-    element:  <ProtectionCap><Chome/></ProtectionCap>
+    element:  <Chome/>
   },
   {
     path:"/C-signup",
-    element:<ProtectionCap><Csignup/></ProtectionCap>
+    element:<Csignup/>
   },
   {
     path:"/C-login",
-    element:<ProtectionCap><Clogin/></ProtectionCap>
+    element:<Clogin/>
   },
 
  
