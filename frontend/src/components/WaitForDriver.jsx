@@ -1,31 +1,34 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const ConfVeh = ({setConfVeh, setConDriver}) => {
-
-  
-  const {vehicleImg} = useSelector(store => store.vehicle)
-  
+const WaitForDriver = ({ setConDriver, setWaitDriver }) => {
+  const { vehicleImg } = useSelector((state) => state.vehicle);
 
   return (
     <div>
       <i
         onClick={() => {
-          setConfVeh(false)
+          setConDriver(false);
+          setWaitDriver(false);
         }}
-        
         className=" absolute top-0 right-2  ri-arrow-down-wide-line text-3xl"
       ></i>
 
-      <h3 className="text-2xl font-semibold mb-3">Confirm your Ride. </h3>
+
+        <div className="flex items-center justify-between">
+
+        <img className="h-16" src={vehicleImg} alt="" />
+        <div className="text-right">
+          <h2 className="text-lg -mb-1 font-semibold">Suraj</h2>
+          <h3 className="font-bold -mb-1">UP72 HJ 1234</h3>
+          <p className="text-sm text-gray-400">Maruti Suzuki Alto</p>
+        </div>
+
+
+        </div>
+
 
       <div className="flex gap-3 flex-col justify-between items-center">
-        <img
-          className="h-20"
-          src={vehicleImg}
-          alt=""
-        />
-
         <div className="w-full mt-5">
           <div className="flex gap-4 items-center p-3 border-b-2">
             <h2 className="bg-[#eee] h-10 w-12 flex items-center justify-center rounded-full">
@@ -60,16 +63,11 @@ const ConfVeh = ({setConfVeh, setConDriver}) => {
             </div>
           </div>
         </div>
-
-        <button onClick={() => {
-          setConDriver(true)
-          setConfVeh(false)
-          }} className="w-full mt-5 bg-green-600 p-3 rounded-lg text-white font-bold">
-          Confirm
-        </button>
       </div>
     </div>
   );
 };
 
-export default ConfVeh;
+export default WaitForDriver;
+
+//img n ai

@@ -5,16 +5,23 @@ import "remixicon/fonts/remixicon.css";
 import LocSerPanel from "../components/LocSerPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfVeh from "../components/ConfVeh";
+import ConDriver from "../components/ConDriver";
+import WaitForDriver from "../components/waitForDriver";
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
   const [panelUp, setPanelUp] = useState(false);
   const [vehicle, setVehicle] = useState(false);
   const [confVeh, setConfVeh] = useState(false);
+  const [conDriver, setConDriver] = useState(false);
+  const [waitDriver, setWaitDriver] = useState(false);
+
 
   const pannel = useRef(null);
   const vehiclePanel = useRef(null);
   const confVehPanel = useRef(null);
+  const ConDriverPanel = useRef(null);
+  const WaitForDriverPanel = useRef(null);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -37,6 +44,19 @@ const Homepage = () => {
       transform: confVeh ? "translateY(0%)" : "translateY(100%)",
     });
   }, [confVeh]);
+
+  useGSAP(() => {
+    gsap.to(ConDriverPanel.current, {
+      transform: conDriver ? "translateY(0%)" : "translateY(100%)",
+    });
+  }, [conDriver]);
+
+
+  useGSAP(() => {
+    gsap.to(WaitForDriverPanel.current, {
+      transform: waitDriver ? "translateY(0%)" : "translateY(100%)",
+    });
+  }, [waitDriver]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -115,8 +135,20 @@ const Homepage = () => {
         ref={confVehPanel}
         className="fixed w-full z-10  bottom-0 p-7   translate-y-full  bg-white"
       >
-        <ConfVeh/>
+        <ConfVeh setConDriver={setConDriver}  confVeh={confVeh} setConfVeh={setConfVeh} />
       </div>
+
+
+      <div  ref={ConDriverPanel} className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white" >
+        <ConDriver setConDriver={setConDriver}  />
+      </div>
+
+
+      <div ref={WaitForDriverPanel} className="fixed w-full z-10 bottom-0 p-7 bg-white" >
+        <WaitForDriver setWaitDriver={setWaitDriver} setConDriver={setConDriver}/>
+      </div>
+
+
     </div>
   );
 };
