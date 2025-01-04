@@ -10,31 +10,38 @@ import Chome from './pages/Chome'
 import Protection from './pages/Protection'
 import ProtectionCap from './pages/ProtectionCap'
 import Logout from './pages/Logout'
+import Riding from './pages/Riding'
+
+
 const routes = createBrowserRouter([
 
   {
     path:"/",
-    element: <Protection><Home/></Protection>
+    element: <Home/>
   },
   {
     path:"/login",
-    element:<Protection><Login/></Protection>
+    element:<Login/>
   },
   {
     path:"/signup",
-    element:<Protection><Signup/></Protection>
+    element: <Signup/>
   },
   
   {
     path:"/home",
-    element:  <Protection><Homepage/></Protection>
+    element: <Homepage/>
   },
 
   {
     path:"/logout",
-    element:  <Protection><Logout/></Protection>
+    element: <Logout/>
   },
 
+  {
+    path:"/riding",
+    element:  <Riding/>
+  },
 
   {
     path:"/c-home",
@@ -42,11 +49,11 @@ const routes = createBrowserRouter([
   },
   {
     path:"/C-signup",
-    element:<Protection><Csignup/></Protection>
+    element:<ProtectionCap><Csignup/></ProtectionCap>
   },
   {
     path:"/C-login",
-    element:<Protection><Clogin/></Protection>
+    element:<ProtectionCap><Clogin/></ProtectionCap>
   },
 
  

@@ -7,6 +7,9 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfVeh from "../components/ConfVeh";
 import ConDriver from "../components/ConDriver";
 import WaitForDriver from "../components/waitForDriver";
+
+
+
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -15,7 +18,6 @@ const Homepage = () => {
   const [confVeh, setConfVeh] = useState(false);
   const [conDriver, setConDriver] = useState(false);
   const [waitDriver, setWaitDriver] = useState(false);
-
 
   const pannel = useRef(null);
   const vehiclePanel = useRef(null);
@@ -51,7 +53,6 @@ const Homepage = () => {
     });
   }, [conDriver]);
 
-
   useGSAP(() => {
     gsap.to(WaitForDriverPanel.current, {
       transform: waitDriver ? "translateY(0%)" : "translateY(100%)",
@@ -66,9 +67,9 @@ const Homepage = () => {
         alt=""
       />
 
-      <div className="h-screen w-screen ">
+      <div className="h-[70%] w-screen ">
         <img
-          className="h-full w-full object-cover"
+          className="h-full w-full  object-cover"
           src="https://imgs.search.brave.com/jK1glZ46aRnMBCp3Bqv7YWCuqyKXawBDiB0s1mPwES0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zaW1v/bnBhbi5jb20vd3At/Y29udGVudC90aGVt/ZXMvc3BfcG9ydGZv/bGlvL2Fzc2V0cy91/YmVyLW5vdC1waWNr/dXAuanBn"
           alt=""
         />
@@ -135,22 +136,33 @@ const Homepage = () => {
         ref={confVehPanel}
         className="fixed w-full z-10  bottom-0 p-7   translate-y-full  bg-white"
       >
-        <ConfVeh setConDriver={setConDriver}  confVeh={confVeh} setConfVeh={setConfVeh} />
+        <ConfVeh
+          setConDriver={setConDriver}
+          confVeh={confVeh}
+          setConfVeh={setConfVeh}
+        />
       </div>
 
-
-      <div  ref={ConDriverPanel} className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white" >
-        <ConDriver setConDriver={setConDriver}  />
+      <div
+        ref={ConDriverPanel}
+        className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white"
+      >
+        <ConDriver setConDriver={setConDriver} />
       </div>
 
-
-      <div ref={WaitForDriverPanel} className="fixed w-full z-10 bottom-0 p-7 bg-white" >
-        <WaitForDriver setWaitDriver={setWaitDriver} setConDriver={setConDriver}/>
+      <div
+        ref={WaitForDriverPanel}
+        className="fixed w-full z-10 bottom-0 p-7 bg-white"
+      >
+        <WaitForDriver
+          setWaitDriver={setWaitDriver}
+          setConDriver={setConDriver}
+        />
       </div>
-
-
     </div>
   );
 };
+
+
 
 export default Homepage;
