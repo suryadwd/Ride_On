@@ -59,6 +59,7 @@ const routes = createBrowserRouter([
 
   {
     path:"/C-riding",
+    
     element:<CaptainRiding/>
   },
  
