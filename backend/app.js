@@ -6,6 +6,7 @@ const app = express()
 import userRoutes from "./routes/user.route.js"
 import captainRoutes from "./routes/cap.route.js"
 import cookieParser from "cookie-parser"
+import mapRoutes from "./routes/map.route.js"
 app.use(cookieParser())
 const corsOption = {
   origin:"http://localhost:5173",
@@ -18,5 +19,6 @@ app.use(express.urlencoded({extended:true}))
 
 app.use("/api/v1/users/",userRoutes)
 app.use("/api/v1/captain/",captainRoutes)
+app.use("/api/v1/maps",mapRoutes)
 
 export default app
