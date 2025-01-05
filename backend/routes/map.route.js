@@ -1,14 +1,14 @@
 import express from "express"
 const router = express.Router()
-import { protectedRouteForCap } from "../middleware/protectedRouteforCap.js"
+
 
 import {getAutoSuggestion, getCoordinate, getDistanceTime} from "../controllers/map.controller.js"
 
 
-router.get("/get-cordinates",protectedRouteForCap,getCoordinate)
+router.get("/get-cordinates", getCoordinate)
 
-router.get("/get-distance-time",protectedRouteForCap, getDistanceTime)
+router.get("/get-distance-time", getDistanceTime)
 
-router.get("/get-suggestion",protectedRouteForCap, getAutoSuggestion)
+router.get("/get-suggestion", getAutoSuggestion)
 
 export default router

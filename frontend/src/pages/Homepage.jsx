@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
@@ -7,8 +7,7 @@ import VehiclePanel from "../components/VehiclePanel";
 import ConfVeh from "../components/ConfVeh";
 import ConDriver from "../components/ConDriver";
 import WaitForDriver from "../components/waitForDriver";
-
-
+import axios from "axios";
 
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
@@ -59,6 +58,70 @@ const Homepage = () => {
     });
   }, [waitDriver]);
 
+  //backend
+
+  const [pickupSuggestions, setPickupSuggestions] = useState([]); // Suggestions for pickup
+  const [destinationSuggestions, setDestinationSuggestions] = useState([]); // Suggestions for destination
+  const [isPickupActive, setIsPickupActive] = useState(true); // To track which input is active
+
+  const fetchSuggestions = async (input, type) => {
+    if (!input) return;
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/maps/get-suggestion?input=${encodeURIComponent(
+          input
+        )}`
+      );
+      if (type === "pickup") {
+        setPickupSuggestions(response.data); // Update pickup suggestions
+      } else {
+        setDestinationSuggestions(response.data); // Update destination suggestions
+      }
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (pickup) {
+      fetchSuggestions(pickup, "pickup");
+    }
+  }, [pickup]);
+
+  useEffect(() => {
+    if (destination) {
+      fetchSuggestions(destination, "destination");
+    }
+  }, [destination]);
+
+  const [price, setPrice] = useState({});
+
+  const fetchPrice = async () => {
+    let res = await axios.get("http://localhost:8000/api/v1/ride/get-price", {
+      params: { pickup, destination },
+      withCredentials: true,
+    });
+
+    setPrice({ auto: res.data.auto, moto: res.data.moto, car: res.data.car });
+  };
+
+  const createRide = async (vehicleType) => {
+    const res = await axios.post(
+      "http://localhost:8000/api/v1/ride/create",
+      {
+        pickup,
+        destination,
+        vehicleType,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+  };
+
+  //configuration
+
   return (
     <div className="h-screen relative overflow-hidden">
       <img
@@ -99,7 +162,10 @@ const Homepage = () => {
             <div className="line absolute h-16 w-1 top-[50%] ml-2 rounded-full bg-gray-600"></div>
             <input
               value={pickup}
-              onClick={() => setPanelUp(true)}
+              onClick={() => {
+                setPanelUp(true);
+                setIsPickupActive(true);
+              }}
               onChange={(e) => setPickup(e.target.value)}
               className="bg-[#eee] px-12 py-3 mt-4 rounded-md w-full"
               type="text"
@@ -107,13 +173,27 @@ const Homepage = () => {
             />
             <input
               value={destination}
-              onClick={() => setPanelUp(true)}
+              onClick={() => {
+                setPanelUp(true);
+                setIsPickupActive(false);
+              }}
               onChange={(e) => setDestination(e.target.value)}
               className="bg-[#eee] px-12 py-3 mt-3 rounded-md w-full"
               type="text"
               placeholder="Enter your destination"
             />
           </form>
+
+          <button
+            onClick={() => {
+              setVehicle(true);
+              setPanelUp(false);
+              fetchPrice();
+            }}
+            className="bg-blue-500 mt-5 ml-24 text-white border-2 p-3"
+          >
+            Choose Vehicle
+          </button>
         </div>
 
         <div ref={pannel} className=" p-5 bg-white">
@@ -121,6 +201,12 @@ const Homepage = () => {
             setPanelUp={setPanelUp}
             vehicle={vehicle}
             setVehicle={setVehicle}
+            suggestions={
+              isPickupActive ? pickupSuggestions : destinationSuggestions
+            }
+            type={isPickupActive ? "pickup" : "destination"} // Pass type here
+            setPickup={setPickup}
+            setDestination={setDestination}
           />
         </div>
       </div>
@@ -129,7 +215,12 @@ const Homepage = () => {
         ref={vehiclePanel}
         className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white"
       >
-        <VehiclePanel setConfVeh={setConfVeh} setVehicle={setVehicle} />
+        <VehiclePanel
+          price={price}
+          setConfVeh={setConfVeh}
+          setVehicle={setVehicle}
+          createRide={createRide}
+        />
       </div>
 
       <div
@@ -140,6 +231,9 @@ const Homepage = () => {
           setConDriver={setConDriver}
           confVeh={confVeh}
           setConfVeh={setConfVeh}
+          pickup={pickup}
+          destination={destination}
+          price={price}
         />
       </div>
 
@@ -147,7 +241,12 @@ const Homepage = () => {
         ref={ConDriverPanel}
         className="fixed w-full z-10 bottom-0 p-7   translate-y-full  bg-white"
       >
-        <ConDriver setConDriver={setConDriver} />
+        <ConDriver
+          pickup={pickup}
+          destination={destination}
+          price={price}
+          setConDriver={setConDriver}
+        />
       </div>
 
       <div
@@ -162,7 +261,5 @@ const Homepage = () => {
     </div>
   );
 };
-
-
 
 export default Homepage;

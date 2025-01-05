@@ -1,11 +1,11 @@
 import { getDistanceTimeData } from "../utils/maps.services.js"
 import {Ride} from "../models/ride.model.js"
 
-async function TotalPrice(pickUp, destination) {
+async function TotalPrice(pickup, destination) {
     
-  if(!pickUp || !destination) throw new Error ("Pickup and destination are required")
+  if(!pickup || !destination) throw new Error ("Pickup and destination are required")
 
-  const distanceTime = await getDistanceTimeData(pickUp, destination)
+  const distanceTime = await getDistanceTimeData(pickup, destination)
 
   const basePrice = {auto:25, car:35, moto:20}
 
@@ -21,13 +21,13 @@ async function TotalPrice(pickUp, destination) {
 
 }
 
+
+
 function OTP() {
  
   const otp = crypto.randomUUID().replace(/[^0-9]/g, '').slice(0, 6);
   return otp
 }
-
-OTP()
 
 export const rideCreate = async (req, res) => {
 
@@ -50,5 +50,18 @@ export const rideCreate = async (req, res) => {
   } catch (error) {
     console.error(error)
   } 
+
+}
+
+export const sendPrice = async (req, res) => {
+
+  const {pickup, destination} = req.query
+
+  try {
+    const Price = await TotalPrice(pickup, destination)
+    return res.status(200).json(Price)
+  } catch (error) {
+    return res.status(500).json({message:error.message})
+  }
 
 }

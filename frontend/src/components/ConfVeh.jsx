@@ -1,11 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const ConfVeh = ({setConfVeh, setConDriver}) => {
+const ConfVeh = ({setConfVeh, setConDriver, pickup, destination, price}) => {
 
   
   const {vehicleImg} = useSelector(store => store.vehicle)
   
+  let vehicleType;
+
+  if(vehicleImg === "https://www.pngplay.com/wp-content/uploads/8/Uber-PNG-Photos.png") vehicleType = "car"
+  if(vehicleImg === "https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648177797/assets/fc/ddecaa-2eee-48fe-87f0-614aa7cee7d3/original/Uber_Moto_312x208_pixels_Mobile.png") vehicleType = "moto"
+  if(vehicleImg === "https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png") vehicleType = "auto"
+
 
   return (
     <div>
@@ -16,6 +22,9 @@ const ConfVeh = ({setConfVeh, setConDriver}) => {
         
         className=" absolute top-0 right-2  ri-arrow-down-wide-line text-3xl"
       ></i>
+
+
+   
 
       <h3 className="text-2xl font-semibold mb-3">Confirm your Ride. </h3>
 
@@ -34,7 +43,7 @@ const ConfVeh = ({setConfVeh, setConDriver}) => {
 
             <div>
               <h3 className="text-lg font-medium">BH4/905-b</h3>
-              <p className="text-gray-700">Near Sport Ground</p>
+              <p className="text-gray-700">{pickup}</p>
             </div>
           </div>
 
@@ -45,7 +54,7 @@ const ConfVeh = ({setConfVeh, setConDriver}) => {
 
             <div>
               <h3 className="text-lg font-medium">Fitnness Gym</h3>
-              <p className="text-gray-700">Unimall 8-Floor</p>
+              <p className="text-gray-700">{destination}</p>
             </div>
           </div>
 
@@ -55,7 +64,7 @@ const ConfVeh = ({setConfVeh, setConDriver}) => {
             </h2>
 
             <div>
-              <h3 className="text-lg font-medium">₹96.76</h3>
+              <h3 className="text-lg font-medium">₹{price[vehicleType]}</h3>
               <p className="text-gray-700">Cash Cash</p>
             </div>
           </div>
