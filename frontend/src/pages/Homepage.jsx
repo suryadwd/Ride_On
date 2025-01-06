@@ -9,6 +9,9 @@ import ConDriver from "../components/ConDriver";
 import WaitForDriver from "../components/waitForDriver";
 import axios from "axios";
 
+
+import { useSelector } from "react-redux";
+
 const Homepage = () => {
   const [pickup, setPickup] = useState("");
   const [destination, setDestination] = useState("");
@@ -119,6 +122,19 @@ const Homepage = () => {
       }
     );
   };
+
+  //configuration
+
+  //socket
+
+  const { socket } = useSelector((store) => store.socketio);
+  const { authUser } = useSelector((store) => store.user);
+
+  useEffect(() => {
+    // console.log(authUser?.user?._id)
+
+    socket.emit("join", { userType: "user", userId: authUser?.user?._id });
+  }, [authUser]);
 
   //configuration
 
@@ -263,3 +279,5 @@ const Homepage = () => {
 };
 
 export default Homepage;
+
+//9 19 29

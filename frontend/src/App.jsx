@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -12,7 +12,9 @@ import ProtectionCap from './pages/ProtectionCap'
 import Logout from './pages/Logout'
 import Riding from './pages/Riding'
 import CaptainRiding from './pages/CaptainRiding'
-
+import { io } from "socket.io-client";
+import { setSocket } from "./redux/socketSlice"; 
+import { useDispatch, useSelector } from 'react-redux'
 
 const routes = createBrowserRouter([
 
@@ -65,8 +67,41 @@ const routes = createBrowserRouter([
  
 ])
 
-
 const App = () => {
+
+  const { socket } = useSelector(store => store.socketio);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:8000", {
+      withCredentials: true,
+    });
+
+    // Dispatch the socket instance to Redux
+    dispatch(setSocket(newSocket));
+
+    // Cleanup on unmount
+    return () => {
+      newSocket.disconnect();
+    };
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => {
+        console.log("Connected to server :");
+      });
+
+      socket.on("disconnect", () => {
+        console.log("Disconnected from server");
+      });
+    }
+  }, [socket]);
+
+ 
+  
+
   return (
     <RouterProvider router = {routes} />
   )

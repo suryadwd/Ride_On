@@ -1,12 +1,19 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+
 
 const CaptainDetails = () => {
+
+  const {caption} = useSelector(store => store.caption)
+
+  
+
   return (
     <div>
        <div className="flex items-center justify-between" >
           <div className="flex items-center gap-3 justify-start">
             <img className="h-16 w-16  rounded-full object-cover" src="https://imgs.search.brave.com/nzON_Rfmrly920yQTH10cifc5XtGofYcHpLN__GoA50/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvOTM4/NzA5MzYyL3Bob3Rv/L3BvcnRyYWl0LW9m/LWEtZ2lybC5qcGc_/cz02MTJ4NjEyJnc9/MCZrPTIwJmM9VVFH/WHBlaUxySTc4bk8x/QjlwZVVuMEQwZkNT/UnJtLUo4eG9oTVdH/Mkxtcz0" alt="" />
-            <h4 className="text-lg font-semibold" >Subham dwd</h4>
+            <h4 className=" text-lg font-semibold" >{caption?.caption?.firstname}{" "}{caption?.caption?.lastname}</h4>
           </div>
 
           <div>

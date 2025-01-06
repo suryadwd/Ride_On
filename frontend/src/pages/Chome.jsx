@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { data, Link } from "react-router-dom";
 import CaptainDetails from "../components/CaptainDetails";
 import RidePopUp from "../components/RidePopUp";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ConfRidePopUp from "../components/ConfRidePopUp";
+import { useSelector } from "react-redux";
+import { Captain } from "../../../backend/models/cap.model";
 const Chome = () => {
 
 
@@ -14,6 +16,9 @@ const Chome = () => {
 
   const popUpPannel = useRef(null);
   const confPopUpPannel = useRef(null)
+
+
+  
 
   useGSAP(() => {
     gsap.to(confPopUpPannel.current, {
@@ -28,6 +33,46 @@ const Chome = () => {
       transform: popUp ? "translateY(0%)" : "translateY(100%)"
     });
   }, [popUp]);
+
+
+
+
+   //socket
+
+   const { socket } = useSelector((store) => store.socketio);
+   const { caption } = useSelector((store) => store.caption);
+ 
+   useEffect(() => {
+    //  console.log(caption?.caption?._id)
+ 
+     socket.emit("join", { userType: "captain", userId: caption?.caption?._id });
+
+    socket.on('update-location-captain', async  (data) => {
+      const {userId, location} = data;
+      await Captain.findByIdAndUpdate(userId, {location:{
+        ltd:location.ltd,
+        lng:location.lng,
+      }})
+    } )
+
+   }, [caption]);
+   
+useEffect(() => {
+  const interval = setInterval(() => {
+   navigator.geolocation.getCurrentPosition((position) => {
+    const { latitude, longitude } = position.coords;
+    socket.emit("update-location", {
+      userId: caption?.caption?._id,
+      location: { ltd: latitude, lng: longitude },
+    });
+   });
+  }, 10000);
+
+  return () => clearInterval(interval);
+}, [caption, socket]);
+ 
+   //configuration
+
 
   return (
     <div className="h-screen">
